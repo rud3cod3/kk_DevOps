@@ -1,0 +1,6 @@
+# use NPM repo for node packages
+
+node -e "console.log(modules.paths)"		# To look modules installation paths
+node -v
+npm -v
+npm install --global <package_name>
