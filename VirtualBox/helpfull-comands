@@ -1,29 +1,36 @@
-" ================================================
-" VirtualBox CLI Essentials - Vim Version
-" ================================================
+================================================
+        VIRTUALBOX CLI CHEAT SHEET
+================================================
 
-" --- List VMs ---
-:!VBoxManage list vms
-" Lists all registered VMs with name and UUID
+[ VM MANAGEMENT ]
+----------------
+List all VMs
+    VBoxManage list vms
 
-:!VBoxManage list runningvms
-" Shows only currently running VMs
+List running VMs
+    VBoxManage list runningvms
 
-" --- Start & Stop VMs ---
-:!VBoxManage startvm "UbuntuServer" --type headless
-" Headless start (no GUI)
+Start VM (headless)
+    VBoxManage startvm "UbuntuServer" --type headless
 
-:!VBoxManage controlvm "UbuntuServer" acpipowerbutton
-" Graceful shutdown
+Graceful shutdown
+    VBoxManage controlvm "UbuntuServer" acpipowerbutton
 
-:!VBoxManage controlvm "UbuntuServer" poweroff
-" Force shutdown if needed
+Force stop
+    VBoxManage controlvm "UbuntuServer" poweroff
 
-" --- Networking & Port Forwarding ---
-:!VBoxManage modifyvm "UbuntuServer" --natpf1 "ssh,tcp,,2222,,22"
-" Forward Host Port 2222 → Guest Port 22 (SSH)
 
-" --- Auto Start VM on Host Boot ---
-:!VBoxManage modifyvm "UbuntuServer" --autostart-enabled on
-" Enables VM auto-start when the host boots
+[ NETWORKING / PORT FORWARDING ]
+--------------------------------
+Forward host port 2222 → guest port 22
+    VBoxManage modifyvm "UbuntuServer" --natpf1 "ssh,tcp,,2222,,22"
+
+Format:
+    "rule-name,protocol,[host-ip],host-port,[guest-ip],guest-port"
+
+
+[ AUTO-START VM ]
+-----------------
+Enable auto-start on host boot
+    VBoxManage modifyvm "UbuntuServer" --autostart-enabled on
 
