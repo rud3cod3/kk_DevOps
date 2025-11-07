@@ -1,0 +1,157 @@
+=============================================================
+                 DEVOPS PREREQUISITES NOTES
+=============================================================
+
+DATA FORMATS
+-------------------------------------------------------------------------------
+XML
+- Tag-based hierarchical format
+- Used in Maven, Jenkins, SOAP APIs
+- One root element required
+- Attributes: <server enabled="true">
+- Comments: <!-- comment -->
+- Example:
+  <server>
+    <host>example.com</host>
+    <port>8080</port>
+    <enabled>true</enabled>
+  </server>
+
+JSON
+- Key-value pairs (objects, arrays)
+- Used in APIs, Terraform, AWS CLI outputs
+- No comments allowed
+- Example:
+  {
+    "server": {
+      "host": "example.com",
+      "port": 8080,
+      "enabled": true
+    }
+  }
+- CLI Tool: jq → cat config.json | jq '.server.host'
+
+YAML
+- Indentation-based (spaces only)
+- Used in Kubernetes, Ansible, Docker Compose, GitHub Actions
+- Multi-line: | (literal), > (folded)
+- Example:
+  server:
+    host: example.com
+    port: 8080
+    enabled: true
+
+-------------------------------------------------------------------------------
+MYSQL
+-------------------------------------------------------------------------------
+Installation:
+  wget https://dev.mysql.com/get/mysql-apt-config_0.8.36-1_all.deb
+  sudo dpkg -i mysql-apt-config_0.8.36-1_all.deb
+  sudo systemctl start mysql
+  sudo systemctl status mysql
+
+Connect & User Management:
+  mysql -u root -p
+  ALTER USER 'root'@'localhost' IDENTIFIED BY 'New_Password';
+  CREATE DATABASE db_name;
+  USE db_name;
+  CREATE USER 'john'@'localhost' IDENTIFIED BY 'New_Password';
+  CREATE USER 'john'@'%' IDENTIFIED BY 'New_Password';
+  GRANT SELECT, UPDATE ON db_name.* TO 'john'@'%';
+  FLUSH PRIVILEGES;
+
+-------------------------------------------------------------------------------
+PROGRAMMING LANGUAGES
+-------------------------------------------------------------------------------
+Node.js
+- Install: sudo apt install nodejs npm
+- Commands:
+  npm init -y
+  npm install express
+  sudo npm install -g nodemon
+- Check: node -v, npm -v
+
+Python
+- Install: sudo apt install python3 python3-pip python3-venv
+- Virtual env:
+  python3 -m venv venv
+  source venv/bin/activate
+  deactivate
+- Pip usage:
+  pip install requests
+  pip uninstall requests
+  pip freeze > requirements.txt
+  pip install -r requirements.txt
+
+Go
+- Install: sudo apt install golang
+- Manual latest: wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
+  sudo tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+  export PATH=$PATH:/usr/local/go/bin
+  go version
+- Go modules:
+  mkdir myapp && cd myapp
+  go mod init myapp
+  go get github.com/gin-gonic/gin
+  go run main.go
+
+Ruby
+- Install: sudo apt install ruby-full
+- Commands: gem install rails, gem list, gem uninstall rails
+
+Java
+- Install: sudo apt install openjdk-17-jdk maven
+- Commands: java -version, mvn -v, mvn clean install, mvn package
+
+C / C++
+- Install: sudo apt install build-essential
+- Check: gcc --version, g++ --version
+
+-------------------------------------------------------------------------------
+SYSTEM PACKAGE MANAGEMENT
+-------------------------------------------------------------------------------
+Debian/Ubuntu:
+- Search: apt search <pkg>
+- Install .deb: sudo dpkg -i file.deb
+- Upgrade: sudo apt upgrade
+- Remove: sudo apt remove <pkg>
+- Fix broken: sudo apt --fix-broken install
+- Reinstall: sudo apt install --reinstall <pkg>
+- Clean cache: sudo apt clean && sudo apt autoclean
+- List installed: apt list --installed
+
+RHEL/Fedora:
+- Search: dnf search <pkg>
+- Install .rpm: sudo rpm -ivh file.rpm
+- Upgrade: sudo dnf upgrade
+- Remove: sudo dnf remove <pkg>
+- Reinstall: sudo dnf reinstall <pkg>
+- Clean cache: sudo dnf clean all
+
+-------------------------------------------------------------------------------
+PRODUCTION & DEPLOYMENT
+-------------------------------------------------------------------------------
+Python Production:
+- Gunicorn, uWSGI, Gevent, Twisted Web
+- Example: gunicorn main.app
+- With workers: gunicorn main.app -w 2
+
+Node.js Production:
+- Use PM2 or systemd for process management
+
+-------------------------------------------------------------------------------
+FULL SETUP EXAMPLE (Ubuntu)
+-------------------------------------------------------------------------------
+sudo apt update
+sudo apt install -y python3 python3-pip nodejs npm golang ruby-full \
+openjdk-17-jdk maven git docker.io
+
+Check versions:
+  python3 --version
+  pip3 --version
+  node -v
+  npm -v
+  go version
+  ruby -v
+  java -version
+
