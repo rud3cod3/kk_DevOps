@@ -248,3 +248,36 @@ sudo iptables -L -v -n    " List rules with counts
 # Save rules permanently
 sudo netfilter-persistent save    " Persist rules across reboot
 
+
+# ===============================================================
+# SYSTEMD HELP 
+# ===============================================================
+
+# Use this command to edit service file directly
+systemctl edit <Service_file_name> --full
+
+# To see current runlevel
+systemctl get-default
+
+# To set it to something other
+systemctl set-default multi-user.target
+
+# To list all units
+systemctl list-units --all
+
+# To list active units
+systemctl list-units
+
+# ================================================================
+# JOURNALCTL HELP
+# ================================================================
+
+# List all log
+journalctl
+
+# All logs from boot
+journalctl -b
+
+# To look log for specific srevice
+# journalctl -u UNIT
+# journalctl -u docker.service 

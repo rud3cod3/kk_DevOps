@@ -1,0 +1,16 @@
+[Unit]
+Description=Python Django for Project Mercury Documentation=http://wiki.caleston-dev.ca/mercury
+After=postgresql.service
+
+[Service]
+ExecStart=/usr/bin/project-mercury.sh
+User-project_mercury
+Restart-on-failure
+RestartSec=10
+
+[Install]
+WantedBy graphical.target
+
+# After writing this whole thing run this command to reload the service daemon
+# systemctl daemon-reload
+# systemctl start project-mercury.service
