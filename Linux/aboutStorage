@@ -1,0 +1,6 @@
+# STARTS HERE
+lsblk					# List block devices
+fdisk -l /dev/sda			# Create / Manipulate/ Find_Info about partition
+
+# TO START PARTITIONOING USE GDISK (FOR GPT PARTITION)
+gdisk /dev/sdb				# sdb is just for refernce
