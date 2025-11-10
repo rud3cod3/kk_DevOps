@@ -1,0 +1,9 @@
+# To check version
+git --version
+
+# To Show various types of objects
+git help show
+
+# To set username and email
+git config user.name "rud3cod3"
+git config user.email "devops6722@gmail.com"
