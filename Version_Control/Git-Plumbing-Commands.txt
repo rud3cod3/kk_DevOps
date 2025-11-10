@@ -224,7 +224,4 @@ git cat-file -p <hash>           # Decode content
 # 5. git cat-file, git hash-object, git write-tree, git commit-tree
 #    together can rebuild the entire repo structure manually.
 
-==========================================
-      END OF NOTES
-==========================================
-
+Ref : https://medium.com/frontend-canteen/git-plumbing-commands-db5117aa91e0
