@@ -1,0 +1,4 @@
+# docker run
+
+docker run image:tag		# to download specific version
+docker run image		# get the default image
