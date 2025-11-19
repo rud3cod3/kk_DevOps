@@ -1,4 +1,9 @@
 # docker run
-
 docker run image:tag		# to download specific version
 docker run image		# get the default image
+
+# Setting env vars
+docker run -e APP_COLOR=blue Docker_img_Name
+
+# To check already available env vars
+docker inspect Container_Name
