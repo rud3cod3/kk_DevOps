@@ -4,6 +4,7 @@ docker run image		# get the default image
 
 # Setting env vars
 docker run -e APP_COLOR=blue Docker_img_Name
+docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db mysql
 
 # To check already available env vars
 docker inspect Container_Name
