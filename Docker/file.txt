@@ -8,3 +8,38 @@ docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db mysql
 
 # To check already available env vars
 docker inspect Container_Name
+
+-------------------
+# CMD vs ENTRYPOINT
+-------------------
+
+## CMD
+
+Provides default arguments/commands for the container.
+Can be overwritten when you run docker run <image> <new command>.
+Best for giving a fallback command.
+
+-------------
+## ENTRYPOINT
+-------------
+
+Defines the container’s main executable.
+Not replaced by arguments; instead, arguments are passed to it.
+Best when you want the container to always run a specific program.
+
+Together:
+
+ENTRYPOINT = fixed executable
+CMD = default arguments (can override)
+
+Example:
+
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+
+# link 
+
+# We can use link to connect to container for interaction
+docker run -d --name python-app -p 8000:80 --link redis:redis python-vote-app
+
+Note : Remember to start the container first which we want to link
