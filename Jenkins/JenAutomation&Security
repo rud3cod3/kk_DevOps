@@ -1,0 +1,11 @@
+## Command
+
+## This one will list the jobs
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:admin list-jobs
+
+To get info on this go to your jenkins / manage jenkins / jenkins cli / 
+Here all the command will be listed with proper description
+
+## This one using API
+# curl -u admin:admin http://localhost:8080/api/json | jq
+
