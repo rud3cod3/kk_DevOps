@@ -1,4 +1,6 @@
 ## installed plugin 
 # Blue Ocean
+# matrix project plugin
+# matrix authorization stretegy
 
 ## We can also make use of Jenkins CLI and Jenkins REST API 
