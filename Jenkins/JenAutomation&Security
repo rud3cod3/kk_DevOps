@@ -9,3 +9,13 @@ Here all the command will be listed with proper description
 ## This one using API
 # curl -u admin:admin http://localhost:8080/api/json | jq
 
+## CRUMB is a security implementation in jenkins
+# We need this for identification and to get it go to jenkins web interface > user > security > api (token)
+
+# 
+# Get crumb
+# curl -s -u admin:admin http://localhost:8080/crumbIssuer/api/json -v 
+#
+# For detailed output and store cookie
+# curl -s -u admin:admin http://localhost:8080/crumbIssuer/api/json --cookie-jar /tmp/cookies | jq
+#
