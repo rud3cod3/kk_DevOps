@@ -1,3 +1,9 @@
+# ------+
+# Note: |
+# ------+
+# First install kubectl and then minikube
+#
+#
 # Kubernetes is an Orchestration Tool
 # Docker (or container engines) provide Containerization
 # 
