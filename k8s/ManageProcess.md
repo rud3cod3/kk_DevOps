@@ -17,6 +17,23 @@ top
 
 # To find process id
 pgrep ssh
+
+# To put processed in background 
+sleep 100&
+
+# To list background jobs
+jobs
+
+# To take it to foreground
+fg 1
+
+# Suppose you listed job and want to start job in background which was stopped use
+bg 1
+```
+
+### To see list of files and directory process is using
+```bash
+lsof -p [PID}
 ```
 
 ### Nice value
