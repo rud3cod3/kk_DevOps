@@ -145,3 +145,10 @@ rewrite regex URL;
 try_files testobject /video
 ```
 * Whenever the request for localhost/testobject is made the response of that object will be given and if the object is not found the second parameter in our example which is video will be reponded
+
+### Logging in nginx
+
+All the logs related to nginx is locate at
+```bash
+cat /etc/nginx/*
+```
