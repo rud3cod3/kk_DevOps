@@ -1,6 +1,6 @@
 ### Nginx Configuration Terminology
 
-Main configuration of nginx file is located At
+Main configuration of nginx file is located At :
 ```bash
 cat /etc/nginx/nginx.conf
 ```
