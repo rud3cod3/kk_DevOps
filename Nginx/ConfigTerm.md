@@ -38,7 +38,7 @@ http{
     ### OR
 
     # Insted of defining all things manually we can define mine.type
-    ```code    
+    ```bash   
     includes mine.types;
     ```
     * This file supports all the extensions which are needed to run code sucessfull.
