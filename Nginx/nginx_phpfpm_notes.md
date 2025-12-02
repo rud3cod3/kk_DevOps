@@ -19,7 +19,7 @@ User visits:
 
 Nginx receives the request.
 
-### 2️⃣ Nginx Sees “This is PHP — I cannot run it”
+### Nginx Sees “This is PHP — I cannot run it”
 Config example:
 
 ```nginx
@@ -31,6 +31,7 @@ location ~ \.php$ {
 **“Send PHP files to PHP-FPM.”**
 
 ### Understanding the Processes
+
 * Nginx Starts
     * 1 master process
     * Multiple worker processes (receive HTTP requests)
@@ -48,3 +49,32 @@ Example Request: /home.php
 3. PHP-FPM worker runs home.php
 4. Output returned to Nginx
 5. Nginx sends it to browser
+
+### Why Multiple Processes?
+* **Nginx:**
+    * Event-based
+    * Each worker handles many requests
+
+* **PHP-FPM:**
+    * Blocking
+    * Each worker handles one PHP request at a time
+
+* Example config
+```bash
+pm.max_children = 10
+```
+
+### Real-Life Analogy
+* **Nginx = Hospital Receptionist**
+    * fast
+    * Decides where users go
+
+* **PHP-FPM = Doctors**
+    * *Each doctor treats one patient at a time*
+
+
+### Static vs Dynamic Example
+```bash
+/var/www/html/style.css → Static → Nginx serves it  
+/var/www/html/index.php → Dynamic → Nginx sends to PHP-FPM  
+```
