@@ -167,6 +167,13 @@ worker_connections 1024;
     * Connections ≠ clients
     * One client may use **multiple connections** (e.g., keepalive, assets, HTTP/2)
     * Total possible connections =
-    ```nginx
-    worker_processes × worker_connections
-    ```
+```nginx
+worker_processes × worker_connections
+
+**Example**
+4 workers × 1024 connections = 4096 total connections
+```
+    * You are setting how many connections a worker can handle
+    * A connection = one request or one open channel
+    * Clients can use multiple connections
+    * So worker_connections does **not directly equal number of clients**, but number of simultaneous sockets
