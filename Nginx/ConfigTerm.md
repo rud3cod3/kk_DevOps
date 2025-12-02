@@ -170,5 +170,3 @@ location /userdata {
     access_log off;
     return 200 "User has been allowed to check for the further progess";
 ```
-
-### Handle dynamic requests

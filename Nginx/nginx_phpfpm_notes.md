@@ -79,8 +79,6 @@ pm.max_children = 10
 /var/www/html/index.php → Dynamic → Nginx sends to PHP-FPM  
 ```
 
-
-
 ### Suppose you want to run a PHP file using Nginx or any dynamic site — you must install PHP-FPM first
 
 1. Install PHP-FPM
@@ -130,6 +128,7 @@ nginx -s reload
 ```
 
 ### Nginx Performance Optimization
+
 **Worker labs / worker performance optimization**
 
 When Nginx runs, you generally see:
@@ -181,3 +180,45 @@ worker_processes × worker_connections
 * context of chile events context
 * default value is 768;however, considering that every browser usually opens up at last 2 connection/server, this number cab half
 
+**Buffer**
+- Another aspect to manage nginx performance
+- Here for to understand consider buffer as post request which has some data this data will be stored in ram if buffer size is too low the system will be forced to write this data into temporary file which will cause the disk read and write constantly which will ultimately slow down nginx server
+
+1. **client_body_buffer_size**
+- This handles the client buffer size meaning any POST actions sent to nginx. POST actions are typically form submission
+
+2. **client_header_buffer_size**
+- Similar to the preveous directive, only instead it handles the client header size
+
+3. **client_max_body_size**
+- The maximum allowed size for a client request. If the maximum size is exceeded, then Nginx will split out a 413 error or Report Entity Too Large
+
+4. **large_client_header_buffer**
+- The maximum number and size of buffers for large client
+
+5. **Timeout**
+- request timeouts
+
+6. **client_body_timeout** and **client_header_timeout**
+- This directives are responsible for the time a server will wait for a client body or client header to be sent  after request. If neither a body or header is sent, the server will issue a **408** error or Request timeout
+
+7. **keepalive_timeout**
+- Assigns the timeout for keep-alive connections with the client. Nginx will close connection with the client after this period of time
+
+8. **send_timeout** 
+- Established not on the entire transfer of answer, but only between two operation of reading; if after this time client will take nothing, then Nginx is shutting down the connection 
+
+9. **Gzip compression**
+- Gzip can help reduce the amount of network transfer Nginx deals with. However, be carefull increasing the *gzip_comp_level* too high as the server will begin wasting cpu cycles
+
+10. **Static file caching**
+- It's possible to set expire headers for files that don't change and are served regularly. This directives can be added to the actual Nginx server block
+
+
+
+### Modules in the nginx
+* Go to /etc/nginx/modules if modules directory is not in there it mean there are no modules added and we need to add them 
+* use this command it will show you all the default configuration
+```bash
+nginx -V
+```
