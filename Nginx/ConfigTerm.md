@@ -119,3 +119,19 @@ it will return argsname = agneypatel
 ```
 
 ### Return and Rewrite in nginx.conf
+
+#### Return Directive
+* Return is the simpler directive to use compare to NGINX rewrite
+* Lower resource consumption than rewrite
+* Return must  be enclosed within a *server* or *location* block which defines which URL should be rewritten
+
+#### Rewrite Directive
+* This Directive needs to be in a *location* or  *server* lock in order to rewrite the URL 
+* Rewrite directive can be used to perform granular tasks as with it you can perform more complicated URL distinctions such as:
+    * Capture elements in the original URL
+    * Change or add elements in the path
+* Syntax
+```bash    
+rewrite regex URL;
+```
+* Rewrite directives does not send a redirect to the client in all cases. If the rewritten URL matches with another following directive, Nginx will rewrite the URL again.
