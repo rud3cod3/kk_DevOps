@@ -29,20 +29,21 @@ http{
     
     # Why types ?
     # Bydefault nginx will read all files as text and html we need to let know nginx that what is what like css is css and js is js so thats why type block is there
-    
+    ```
     types {
         text/html html;
         text/css css;
     }   
+    ```
 
     ### OR
 
     # Insted of defining all things manually we can define mine.type
-    ```bash   
+    ```  
     includes mine.types;
     ```
     * This file supports all the extensions which are needed to run code sucessfull.
-    
+    ``` 
     server {
     
     # This line defines server is listning on port 80    
@@ -55,8 +56,7 @@ http{
     # This file defines where to server files from
     # Files will be served from this directory
     root /var/www/html/site_name
-    
-    
+    ```
     }
 }
 ```
