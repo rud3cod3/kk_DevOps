@@ -142,7 +142,7 @@ rewrite regex URL;
 * Always write it into server block
 * This will redirect request to /video whenever we hit lovalhost/testobject
 ```bash
-try_files testobject /video
+try_files testobject /video;
 ```
 * Whenever the request for localhost/testobject is made the response of that object will be given and if the object is not found the second parameter in our example which is video will be reponded
 
