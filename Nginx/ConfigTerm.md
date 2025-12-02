@@ -135,3 +135,13 @@ it will return argsname = agneypatel
 rewrite regex URL;
 ```
 * Rewrite directives does not send a redirect to the client in all cases. If the rewritten URL matches with another following directive, Nginx will rewrite the URL again.
+
+
+### try_files
+* It is used to chech wether specified directories exists or not
+* Always write it into server block
+* This will redirect request to /video whenever we hit lovalhost/testobject
+```bash
+try_files testobject /video
+```
+* Whenever the request for localhost/testobject is made the response of that object will be given and if the object is not found the second parameter in our example which is video will be reponded
