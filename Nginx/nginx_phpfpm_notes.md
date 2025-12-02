@@ -178,3 +178,6 @@ worker_processes × worker_connections
 * A connection = one request or one open channel
 * Clients can use multiple connections
 * So worker_connections does **not directly equal number of clients**, but number of simultaneous sockets
+* context of chile events context
+* default value is 768;however, considering that every browser usually opens up at last 2 connection/server, this number cab half
+
