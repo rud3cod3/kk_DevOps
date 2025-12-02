@@ -56,6 +56,41 @@ http{
     # This file defines where to server files from
     # Files will be served from this directory
     root /var/www/html/site_name
+    
+    # Location 
+    # Always keep location context into the server context since the location is a child context
+    # When we open link like localhost/images the location context comes into the picture it let server know which page or content needs be served
+    # Here aboutus will return 200 response code and string message
+    location /aboutus {   
+        return 200 "You have got it"
+        }
+    # Here we can make use of multiple identifiers
+    # = it will match exact page like if ```location = /contactus it will serve contactus page only if we write it like ContactUs it will return 404
+    # ~ means case sensitive
+    # ~* means Not case senstive 
+    
+    # Priority
+    
+    1. Exact Match                  =  URI
+    2. Preferential Prefix Match    ^~ URI
+    3. Regex Match                  ~* URI 
     }
 }
+```
+
+
+### Variables in nginx
+We can make use of variables in nginx (string values)
+
+#### To set value
+```bash
+set $a "agneypatel.info";
+
+$args - List of arguments on the request line
+$body_bytes_sent - Number of bytes sent to the client
+$byets_received - Number of bytes received from a client
+$connection_request - Current number of connection made via connection
+$date_local - Current time in local time zone
+$hostname - hostname
+$nginx_version - nginx version
 ```
