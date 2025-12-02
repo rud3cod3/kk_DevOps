@@ -150,5 +150,23 @@ try_files testobject /video;
 
 All the logs related to nginx is locate at
 ```bash
-cat /etc/nginx/*
+cd /etc/nginx/
+
+# This two files are located here
+1. access.log
+2. error.log 
+```
+
+#### Suppose we want to create log from some special uri, In such cases we can make use of this block and make seprate logs for that particular url or uri aswell
+```bash
+location /userdata {
+    access_log  /var/log/access-allowed.log;
+    return 200 "User has been allowed to check for the further progess";
+```
+
+And suppose we want to turn off logs for a specific uri or url we can set access log to off 
+```bash
+location /userdata {
+    access_log off;
+    return 200 "User has been allowed to check for the further progess";
 ```
