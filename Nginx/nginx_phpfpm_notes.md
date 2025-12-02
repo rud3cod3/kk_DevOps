@@ -79,6 +79,8 @@ pm.max_children = 10
 /var/www/html/index.php → Dynamic → Nginx sends to PHP-FPM  
 ```
 
+
+
 ### Suppose you want to run a PHP file using Nginx or any dynamic site — you must install PHP-FPM first
 
 1. Install PHP-FPM
