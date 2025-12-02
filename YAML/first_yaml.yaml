@@ -1,0 +1,25 @@
+employee:
+  person_one:
+    name: Akila
+    age: 23
+    address:
+      city: Cairo
+      country: Egypt
+    skills:
+      - docker
+      - linux
+      - bash
+      - python
+      - jenkins
+  person_two:
+    name: masika
+    age: 24
+    address:
+      city: Cairo
+      country: Egypt
+    skill:
+      - cloud computing
+      - ubuntu
+      - server administration
+      - cicd automation
+
