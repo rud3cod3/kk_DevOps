@@ -164,9 +164,11 @@ location /userdata {
     return 200 "User has been allowed to check for the further progess";
 ```
 
-And suppose we want to turn off logs for a specific uri or url we can set access log to off 
+#### And suppose we want to turn off logs for a specific uri or url we can set access log to off 
 ```bash
 location /userdata {
     access_log off;
     return 200 "User has been allowed to check for the further progess";
 ```
+
+### Handle dynamic requests

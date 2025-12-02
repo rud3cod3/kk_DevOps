@@ -29,3 +29,22 @@ location ~ \.php$ {
 ```
 
 **“Send PHP files to PHP-FPM.”**
+
+### Understanding the Processes
+* Nginx Starts
+    * 1 master process
+    * Multiple worker processes (receive HTTP requests)
+
+* PHP-FPM Starts
+    * 1 master process
+    * Multiple PHP worker processes (execute PHP code)
+
+### Request Flow Example
+
+Example Request: /home.php
+
+1. Nginx worker receives request
+2. Sees .php → forwards to PHP-FPM
+3. PHP-FPM worker runs home.php
+4. Output returned to Nginx
+5. Nginx sends it to browser
