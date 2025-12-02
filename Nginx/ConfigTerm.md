@@ -93,4 +93,29 @@ $connection_request - Current number of connection made via connection
 $date_local - Current time in local time zone
 $hostname - hostname
 $nginx_version - nginx version
+
+### Using variable and args to serve back response
+### Add this in nginx.conf file
+### args are the one which we pass into url
+
+location /find {
+    return 200 "$hostname \n $args \n $connection_requests \n $nginx_version";
+}
+
+### We can also use conditional statements
+
+server {
+    if  ( $arg_name = "Agney Patel"){
+        return 200 "HELLO YOU ARE TALKING TO AGNEY PATEL"
+    }
+    location /find {
+        return 200 "$hostname \n $args \n $connection_requests  \n $nginx_version
+    }
+}
+
+### Now if we access localhost/find?"agneypatel"
+
+it will return argsname = agneypatel
 ```
+
+### Return and Rewrite in nginx.conf
