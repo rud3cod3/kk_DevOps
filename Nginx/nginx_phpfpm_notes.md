@@ -146,7 +146,7 @@ When Nginx runs, you generally see:
 
 * worker_processes
 * This directive controls *how many worker processes you want*
-``nginx
+```nginx
 worker_processes auto;
 
 OR
