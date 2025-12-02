@@ -109,15 +109,48 @@ location ~ \.php$ {
     fastcgi_pass unix:/run/php/php7.2-fpm.sock;
 }
 ```
-
-* One quick note if we get **502** it means the php and nginx is not integrated sucessfully **might be beacuse of permission issue** 
-* Because be default master nginx process is started by root user but woker processes are generally started by another users
-* Simplest form of solution for this problem is add this line on top of nginx.conf
-* The line will set www-data user as manager of all worker process 
+* A **502** usually means **Nginx could not communicate with PHP-FPM**
+* Common reasons:
+    * PHP-FPM service is **not running**
+    * Socket file permissions mismatch
+    * Wrong socket path in *fastcgi_pass*
+    * PHP-FPM crashed / is overloaded
+* By default:
+    * Nginx **master** runs as **root**
+    * Nginx **worker processes** run as *www-data* (or nginx user)
+* **Simple fix**
 ```nginx
 user www-data;
 ```
-* Now run reload command using
+* Then reload nginx
 ```bash
 nginx -s reload
 ```
+
+### Nginx Performance Optimization
+**Worker labs / worker performance optimization**
+
+When Nginx runs, you generally see:
+
+* **Master process**
+    * Started by root
+    * Manages workers (start, reload, stop)
+    * Does NOT handle client traffic
+
+* **Worker processes**
+    * Started by master
+    * Handle all client connections
+    * Do the heavy lifting
+
+* worker_processes
+* This directive controls *how many worker processes you want*
+``nginx
+worker_processes auto;
+
+OR
+
+worker_processes 4;
+```
+
+* It is common practise to run 1 worker per cpu core
+* Worker process directive belongs to Global context
