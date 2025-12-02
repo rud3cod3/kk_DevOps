@@ -144,7 +144,7 @@ When Nginx runs, you generally see:
     * Handle all client connections
     * Do the heavy lifting
 
-* worker_processes
+* **worker_processes**
 * This directive controls *how many worker processes you want*
 ```nginx
 worker_processes auto;
@@ -156,3 +156,17 @@ worker_processes 4;
 
 * It is common practise to run 1 worker per cpu core
 * Worker process directive belongs to Global context
+
+* **worker_connections**
+* This tells each worker how many simultaneous connections it can handle.
+```nginx
+worker_connections 1024;
+```
+
+* **Important**
+    * Connections ≠ clients
+    * One client may use **multiple connections** (e.g., keepalive, assets, HTTP/2)
+    * Total possible connections =
+    ```nginx
+    worker_processes × worker_connections
+    ```
