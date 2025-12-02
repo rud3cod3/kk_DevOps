@@ -78,3 +78,34 @@ pm.max_children = 10
 /var/www/html/style.css → Static → Nginx serves it  
 /var/www/html/index.php → Dynamic → Nginx sends to PHP-FPM  
 ```
+
+### Suppose you want to run a PHP file using Nginx or any dynamic site — you must install PHP-FPM first
+
+1. Install PHP-FPM
+```bash
+apt update
+apt install php7.2-fpm
+```
+
+2. Now understand this:
+* The **location block** tells Nginx how to handle all *.php* requests.
+* When Nginx receives a request like *index.php*, it cannot execute PHP, so it forwards that request to **FastCGI.**
+* FastCGI is the **communication protocol** used between Nginx and PHP-FPM.
+* So the flow is:
+    * Request comes → Nginx receives it
+    * Nginx sees it’s a *.php* file
+    * Nginx forwards it to PHP-FPM using FastCGI
+    * PHP-FPM executes the PHP code
+    * PHP-FPM sends back the output
+    * Nginx sends that output to the user
+* That’s why in the location block we specify that all PHP requests should be handled by FastCGI (PHP-FPM)
+* Nginx and PHP-FPM need a **common communication channel**, and that channel is provided by the socket file or sometimes a **TCP port**
+* *fastcgi_pass* tells Nginx **where PHP-FPM is listening** so they can talk to each other.
+```nginx
+# nginx.conf
+
+location ~ \.php$ {
+    include fastcgi.conf;
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+}
+```
