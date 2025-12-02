@@ -110,7 +110,7 @@ location ~ \.php$ {
 }
 ```
 
-* One quick note if we get 502 it means the php and nginx is not integrated sucessfully might be beacuse of permission issue 
+* One quick note if we get **502** it means the php and nginx is not integrated sucessfully **might be beacuse of permission issue** 
 * Because be default master nginx process is started by root user but woker processes are generally started by another users
 * Simplest form of solution for this problem is add this line on top of nginx.conf
 * The line will set www-data user as manager of all worker process 
