@@ -222,3 +222,23 @@ worker_processes × worker_connections
 ```bash
 nginx -V
 ```
+* Store output of above given command 
+* Download the source code of nginx and unzip it 
+* Navigate yourself to dir and then run this commands
+```bash
+# Here
+# configure is main configuration file which will give out bin file for nginx
+# output of nginx -V (capital V) 
+# at last modules that we want to add in this case [[** --modules-path=/etc/nginx/modules **]]
+
+./configure [Here add output of the nginx -V command] --modules-path=/etc/nginx/modules
+
+# Them use [[** make **]] command
+make
+make install 
+```
+* Now to use this module which we recently added add this content in nginx.conf
+```nginx
+# add path of module after load_module prefix in global context
+load_module /etc/nginx/modules/ngx_http_image_filter_module.so*
+```
