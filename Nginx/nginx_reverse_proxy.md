@@ -65,3 +65,38 @@ HTTP/1.1 200 OK
 sudo apt update
 sudo apt install nginx -y
 ```
+
+**Create Reverse Proxy Configuration**
+*Edit site config*
+```bash
+sudo vim /etc/nginx/sites-available/reverse.conf
+```
+
+*Paste*
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    # Requests for APP SERVER A
+    location /app1/ {
+        # Send to Machine 2
+        proxy_pass http://10.0.1.10:3000/;
+
+        # Pass important headers
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Requests for APP SERVER B
+    location /app2/ {
+        # Send to Machine 3
+        proxy_pass http://10.0.1.11:3000/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
