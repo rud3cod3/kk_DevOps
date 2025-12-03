@@ -59,7 +59,7 @@ HTTP/1.1 200 OK
 **Step 5: Nginx Sends Response Back to Client**
 *The client thinks everything came from Machine 1*
 
-#### Configuration Setup (Machine 1 – Reverse Proxy)
+### Configuration Setup (Machine 1 – Reverse Proxy)
 **Install Nginx**
 ```bash
 sudo apt update
