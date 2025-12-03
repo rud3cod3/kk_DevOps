@@ -38,3 +38,30 @@ GET http://yourdomain.com/app1/products
 Client’s browser resolves the domain → gets public IP of Machine 1
 
 **Step 2: Machine 1 (Nginx) Receives It**
+Nginx looks at the incoming request path
+* */app1/*
+* */app2/*
+
+**Step 3: Nginx Forwards to Correct App Server**
+*If request path begins with /app1, Nginx removes that prefix and forwards the request to*
+```bash
+http://10.0.1.10:3000/
+```
+*(similarly, /app2 → 10.0.1.11:3000)*
+
+**Step 4: Backend Server Responds**
+*Machine 2 or 3 returns*
+```bash
+HTTP/1.1 200 OK
+```
+*with data*
+
+**Step 5: Nginx Sends Response Back to Client**
+*The client thinks everything came from Machine 1*
+
+#### Configuration Setup (Machine 1 – Reverse Proxy)
+**Install Nginx**
+```bash
+sudo apt update
+sudo apt install nginx -y
+```
