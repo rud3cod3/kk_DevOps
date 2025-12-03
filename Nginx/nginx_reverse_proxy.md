@@ -100,3 +100,76 @@ server {
     }
 }
 ```
+
+**Enable Site**
+```bash
+sudo ln -s /etc/nginx/sites-available/reverse.conf /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+**Backend Application Server Setup (Machine 2 & 3)**
+* Both machines should:
+    * Run the application on an internal port like 3000
+    * Only allow inbound traffic from Machine 1's private IP
+    * Have firewalls block everything else
+
+**Example:Machine 2 (APP)**
+```bash
+node app1.js   # running on 3000
+```
+
+*Machine 3 (App2) is similar*
+
+**What the Reader Should Clearly Understand**
+
+* This architecture:
+    * Keeps only one machine public
+    * Hides application servers completely
+    * Nginx becomes the single point of entry
+    * Paths (/app1, /app2) decide backend routing
+    * Backends operate privately and securely
+    * Nginx returns the response as if it generated it
+    * Client is unaware of internal infrastructure
+    * Easy to scale without changing external behavior
+
+**Diagram (Conceptual)**
+```bash
+   INTERNET
+       |
+       v
+┌───────────────────────────┐
+│  Machine 1 (Reverse Proxy)│   Public IP
+│       Nginx               │
+└───────┬─────────┬─────────┘
+        |         |
+        |         |
+        v         v
+┌──────────────┐ ┌──────────────┐
+│ Machine 2    │ │ Machine 3    │
+│ App Server A │ │ App Server B │
+│ 10.0.1.10    │ │ 10.0.1.11    │
+└──────────────┘ └──────────────┘
+```
+
+**Optional: Load Balancing (If App1 & App2 Are Same Service)**
+```nginx
+upstream backend_cluster {
+    server 10.0.1.10:3000;
+    server 10.0.1.11:3000;
+}
+
+server {
+    listen 80;
+    location / {
+        proxy_pass http://backend_cluster;
+    }
+}
+```
+
+**Summary**
+* This 3-machine structure is a production-grade architecture used in real-world deployments because:
+    * It isolates exposed components
+    * It enforces security boundaries
+    * It gives flexibility for routing, scaling, SSL, caching
+    * It keeps backend logic simple and behind the firewall
