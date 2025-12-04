@@ -173,3 +173,85 @@ server {
     * It enforces security boundaries
     * It gives flexibility for routing, scaling, SSL, caching
     * It keeps backend logic simple and behind the firewall
+
+### NGINX : X-ReaL-IP-Directive
+
+**COMMON ARCHITECTURE**
+
+```bash
++----------+                    +---------+                     +----------+
+|          |    ---------->     |         |     ---------->     |          |
+|  Client  |    <----------     |  NGINX  |     <----------     |  ACTUAL  |
+|          |                    |         |                     |  SERVER  |
++----------+                    +---------+                     +----------+
+```
+
+**Some problem we have to think of**
+When the request comes from client to nginx, nginx will transfer it to the application servers. now suppose if there are multiple clients how does the application server supposed to know which to responsd to beacuse it is getting request from the nginx reverse proxy server in such cases we can make use of this x-real-ip-directive
+
+**Solution**
+To resolve this problem we will have to make use of nginx module
+```bash
+nginx http realip module
+```
+
+**Now get all the *configure arguments***
+```bash 
+nginx -V
+```
+
+**Output**
+```bash
+configure arguments: --with-cc-opt='-g -O2 -ffile-prefix-map=/build/nginx-aSXKE0/nginx-1.18.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -flto=auto -Wl,-z,relro -Wl,-z,now -fPIC' --prefix=/usr/share/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --modules-path=/usr/lib/nginx/modules --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-compat --with-debug --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_v2_module --with-http_dav_module --with-http_slice_module --with-threads --add-dynamic-module=/build/nginx-aSXKE0/nginx-1.18.0/debian/modules/http-geoip2 --with-http_addition_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_sub_module
+```
+
+**Installation**
+
+* Go to dir where we extracted the source code of nginx
+```bash
+cd /opt/nginx
+```
+
+* now run configure with the all the preveous configure arguments and the added real-ip-module
+```bash
+./configure configure arguments: --with-cc-opt='-g -O2 -ffile-prefix-map=/build/nginx-aSXKE0/nginx-1.18.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -flto=auto -Wl,-z,relro -Wl,-z,now -fPIC' --prefix=/usr/share/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --modules-path=/usr/lib/nginx/modules --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-compat --with-debug --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_v2_module --with-http_dav_module --with-http_slice_module --with-threads --add-dynamic-module=/build/nginx-aSXKE0/nginx-1.18.0/debian/modules/http-geoip2 --with-http_addition_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_sub_module [[**--with-http_realip_module**]]
+```
+
+* Then run
+```bash 
+make install
+```
+
+**Now edit the nginx.conf file again with this things**
+```nginx
+# Add this to the server which is acting as reverse proxy
+
+location / {
+    proxy_pass http://**Server_Ip**;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;        
+}
+```
+
+**Now reload the nginx**
+```bash 
+nginx -s reload
+```
+
+**Now add this where application nginx server is running add this into the http context**
+```nginx
+log_format speciallog '$http_x_real_ip - $remote_user [$time_local] '
+                      '"$request" $status $body_bytes_sent '
+                      '"$http_referer" "$http_user_agnet" $remote_addr';
+
+access_log /var/log/nginx/access-special.log specialog;
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log
+```
+
+**Now again use**
+```bash
+nginx -t
+nginx -s reload
+```
+ 
