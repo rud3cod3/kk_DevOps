@@ -87,4 +87,86 @@ pages                                       <========================>
                               | Short time     |                             |             |
                               +----------------+                             +-------------+
 ```
+* **fast-cgi** is widely-used protocol for interfacing interactive application such as **PHP** with web servers such as NGINX 
+* The main advantage of **FCGI** is that manages multiple CGI requests in a single process
+* Under NGINX, the fasrcgi content cache is declared using a directive called *fastcgi_cache_path* in the top-level **http{}** context, within the NGINX configuration structure
+* *fastcgi_cache_key* can be used for caching
 
+#### fastcgi_cache_path Directive Parameters 
+
+*  **/var/cache/nginx** - the path to the local disk directory for the cache
+* **levels** - defines the hierachy levels of a cache, it sets up a two-level directory hierachy under /var/cache/nginx
+* **keys_zone** - enables the creation of a shared memory zone where all active keys and information about data are stored.Note that storing the keys in memory speeds up the checking process, by making it easier for NGINX to determine whether it's a MISS or HIT, without checking the status on disk
+* **inactive** - specifies the amount of time after which cached data that are not accessed during the time specified get deleted from the cache regardless of their freshness
+* **max_size** - specifies the maximum size of cache
+
+**fastcgi_cache_key Directive Parameters**
+    - NGINX uses them in calculating the key of a request. Importantly to send a cached response to the client, the request must have the same key as a  cached response
+    - **$scheme** - request scheme, HTTP or HTTPS
+    - **$request_method** - request method, usually "GET" or "POST"
+    - **$host** - this can be hostname from the request  line, or hostname from the "Host" request header field, or the server name matching a request, in the order the of precedence
+    - **$request_uri** - means the full original request URI
+
+### LAB for micro caching in nginx
+To do it define fastcgi cache path in http context block
+
+```nginx
+fastcgi_cache_path /tmp/cache_nginx level=1:2 keys_zone=ZONE_1:100m inactive=60m;
+fastcgi_cache_key "$scheme$request_method$request_uri";
+```
+
+* Now go to php location block add this there
+* This will cache all the php cache to zone 1 which is in /tmp/cache_nginx
+```bash
+fastcgi_cache ZONE_1;
+fastcgi_cache_valid 200 60m;
+```
+
+* Now to test it use apache-bench
+* Install it first
+```bash
+apt-get -y install apache2-utils
+```
+* user ab command for the installation verification
+```bash
+ab
+```
+* ab to send 200 request with 20 connection
+```bash
+ab -n 200 -c 20 http://domain.com:80/
+```
+
+
+***strictly for refrence***
+```nginx
+ NGINX Configuration File - (You need to update server name and other related content)
+
+user www-data;
+worker_processes auto;
+load_module /etc/nginx/modules/ngx_http_image_filter_module.so;
+events {
+worker_connections 1024;
+}
+http {
+    include mime.types;
+	fastcgi_cache_path /tmp/cache_nginx levels=1:2 keys_zone=ZONE_1:100m inactive=60m;
+	fastcgi_cache_key "$scheme$request_method$host$request_uri";
+	add_header X-Cache $upstream_cache_status;
+    server {
+	listen 80;
+	server_name 104.131.80.130;
+	root /bloggingtemplate/;
+	index index.php index.html;
+	location / {
+   		try_files $uri $uri/ =404;
+  	}
+	location ~\.php$ {
+      		# Pass php requests to the php-fpm service (fastcgi)
+      		include fastcgi.conf;
+      		fastcgi_pass unix:/run/php/php7.2-fpm.sock;	
+		fastcgi_cache ZONE_1;
+		fastcgi_cache_valid 200 60m;
+	}
+    }
+}
+```
