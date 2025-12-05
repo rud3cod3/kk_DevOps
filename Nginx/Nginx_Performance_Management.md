@@ -44,11 +44,13 @@ http {
 
 * Caching **Static content** such as images, javascript and css files, and web content that rarely changes is a relatively straightforward process.
 * Can we cache dynamic content too?
----
+```bash
 **Static content**                          **Dynamic content**                                     **Personlaized Content**
 *Images, CSS,                               Blog posts, status pages                                Shopping cart,
 simple web                                                                                          account data
 pages                                       <========================>
 
 **Easy to cache**                           **Micro-cacheable ?**                                   **Cannot cache**
----
+```
+
+* caching **personalized content** (that is, content customized for each user by the server application) is generally not possible, beacuse the server's response differs for every request for the same resource.
