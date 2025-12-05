@@ -42,6 +42,7 @@ http {
 
 ### Micro cache in Nginx
 
+* Micro caching is limited
 * Caching **Static content** such as images, javascript and css files, and web content that rarely changes is a relatively straightforward process.
 * Can we cache dynamic content too?
 ```bash
@@ -54,3 +55,36 @@ pages                                       <========================>
 ```
 
 * caching **personalized content** (that is, content customized for each user by the server application) is generally not possible, beacuse the server's response differs for every request for the same resource.
+
+* **Dynamic content** - This content can change unpredictably, but is not personanlized for each user (or is personalized using javascript on the client device)
+* Example of dynamic content suitable for caching include
+    * The front page of a busy news or blog site, where new articles are posted every few seconds
+    * An RSS feed of recent information
+    * The status page for a continuos integration (CI) or build platform
+    * An inventory, status, or fundraising  counter
+    * Lottery results
+    * Calender events
+    * Personalized dynamic content is generated on the client device, such as advertising content or data ("hello, your name") that is calculated using cookie data
+
+*  **micro caching** is used to cache the dynamic content
+* *Microcaching* is a caching technique whereby content is cached for a very short perfiod of time
+* **Nginx** uses a persistent disk-cache located in somewhere in the local file system
+
+```bash
+
+    
++----------+                    +----------+                                +------------+
+|          |  Dynamic Request   |          |   php-fpm process for req      |            |
+|  Client  |  -------------->   |  Nginx   |   ---------------------->      |  Php-fpm   |
+|          |  <--------------   |          |   <----------------------      |            |
++----------+  Response HTML     +----------+   Response data                +------------+
+                                                                                  
+                                     🡇                                           🡇     Reuest Processing
+                                                                             
+                              +-------0--------+                             +-------------+     
+                              | Stores data in |                             |             |
+                              | Local disk for |                             |     DB      |
+                              | Short time     |                             |             |
+                              +----------------+                             +-------------+
+```
+
