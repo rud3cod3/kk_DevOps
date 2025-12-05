@@ -14,4 +14,41 @@
 *Cache-Control:public, max-age=31536000*
 - **Expire** - When accompanying the cache-control header, **Expire** simply sets a date from which the cached resource should no longer be considered valid
 - From this date forward the browser will request a fresh copy of the resource. Until then, the browser local cached copy will be used
-- if both Expires and max-age are set max-age will take the precedense 
+- if both Expires and max-age are set max-age will take the precedense
+```nginx
+location = /port.jpg {
+    return 200 "Hello this is Dummy Location";
+    add_header Cache-Control public;
+    add_header pragma public; # Pragma is the earlier header before cache-control, old
+    add_header Vary Accept-Encoding;
+    expires 1M;             # Expiry set to 1 Month  
+} 
+```
+
+### Gzip response at server side
+- How fast a website will load depends on the size of all the files that have to be downloaded by the browser
+- Reducing the size of files to be transmitted can make the website not only load faster, but also cheaper to those who have to pay for their bandwith usage
+- Response file can be minimized by configure Nginx to user gzip to compress files it server on the fly
+- Compress file use up server resources, so it is best to compress only those files that will reduce its size considerably in result
+```nginx
+http {
+    include mime.types;
+    
+    gzip on;
+    gzip_comp_level 4;      # there are total 0 to 10 level the more higher level we describe the more system resource it will use to archive all response so use which can create a balance
+    gzip_types text/plain text/css application/json;
+}
+```
+
+### Micro cache in Nginx
+
+* Caching **Static content** such as images, javascript and css files, and web content that rarely changes is a relatively straightforward process.
+* Can we cache dynamic content too?
+---
+**Static content**                          **Dynamic content**                                     **Personlaized Content**
+*Images, CSS,                               Blog posts, status pages                                Shopping cart,
+simple web                                                                                          account data
+pages                                       <========================>
+
+**Easy to cache**                           **Micro-cacheable ?**                                   **Cannot cache**
+---
