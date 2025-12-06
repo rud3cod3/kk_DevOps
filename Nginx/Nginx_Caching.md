@@ -39,3 +39,8 @@ server {
     }
 }
 ```
+
+**Problem** - Suppose client asked for some file and proxy server served it but what if the application server has made some changes to the main file at the webserver. The proxy server might not share the updated file that coule create a problem in order to overcome that problem we use **if-modified** header
+
+**if-modified-Since HTTP Header** 
+- If-Modified-Since header indicates the time for which a browser first downloaded a resource from the server.This helps determine wether or not the resource has changed since the last time it was accessed.
