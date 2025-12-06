@@ -39,4 +39,41 @@
     +-----------+                       +-----------+
 ```
 
+1. Setup load balancer nginx
+```bash
+cd /etc/nginx/ 
+vim nginx.conf
+```
+
+2. Inside http server block add this 
+```nginx
+http {
+        upstream appserver {
+            server [[**First Servers Ip **]];
+            server [[**Second servers Ip**]] ;   
+        }
+        
+        server {
+            location / {
+                    proxy_pass http://appserver;
+                    }
+        }
+}
+```
+
+3. Reload Nginx
+```bash
+sudo nginx -s reload
+sudo systemctl restart nginx
+```
+
+### Healthcheck in Nginx Load Balancer
+
+**Health check** 
+- Health check is a scheduled rule used to send the same request to each member
+- Nginx plus and open source can continually test our upstream servers, avoid the servers that have failed and gracefully add the recovered servers into the load-balanced group
+- Two types of healthcheck:
+1. Passive HealthCheck (Avalable on Opersource)
+2. Active HealthCheck (Avalable on Nginx+ only)
+
 
